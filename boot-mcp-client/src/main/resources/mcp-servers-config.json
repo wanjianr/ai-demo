@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "gzh-mcp-server": {
+      "command": "java",
+      "args": [
+        "-Dspring.main.banner-mode=off",
+        "-Dspring.ai.mcp.server.stdio=true",
+        "-Dlogging.pattern.console=",
+        "-jar",
+        "D://boot-mcp-server-0.0.1-SNAPSHOT.jar"
+      ]
+    }
+  }
+}

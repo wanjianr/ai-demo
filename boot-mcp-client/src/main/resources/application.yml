@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: mcp-client
+  ai:
+    mcp:
+      client:
+        toolcallback:
+          enabled: true
+        sse:
+          connections:
+            server1:
+              url: http://localhost:8080
+    openai:
+      api-key:
+      base-url: https://api.deepseek.com
+      chat:
+        options:
+          model: deepseek-chat
+
+server:
+  port: 8070
+
+logging:
+  level:
+    io.modelcontextprotocol: trace
+    org.springframework.ai.mcp: trace
+
