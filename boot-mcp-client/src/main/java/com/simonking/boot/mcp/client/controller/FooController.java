@@ -1,41 +1,49 @@
-//package com.simonking.boot.mcp.client;
-//
-//import org.springframework.ai.chat.client.ChatClient;
-//import org.springframework.ai.chat.client.ChatClient.CallResponseSpec;
-//import org.springframework.ai.ollama.OllamaChatModel;
-//import org.springframework.ai.tool.ToolCallbackProvider;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.RequestParam;
-//import org.springframework.web.bind.annotation.RestController;
-//
-///**
-// * Spring AI
-// *
-// * @Author: ws
-// * @Date: 2025/2/24 15:10
-// */
-//@RestController
-//public class FooController {
-//
-//    @Autowired
-//    private OllamaChatModel ollamaChatModel;
-//    @Autowired
-//    private ToolCallbackProvider toolCallbackProvider;
-//
-//    /**
-//     * @Description: 普通的调用
-//     *
-//     * @Author: ws
-//     * @Date: 2025/2/24 16:32
-//     **/
-//    @GetMapping("/ai/generate")
-//    public String generate(@RequestParam(value = "message", defaultValue = "推荐一个公众号") String message) {
-//        ChatClient chatClient = ChatClient.builder(ollamaChatModel)
-//                .defaultTools(toolCallbackProvider.getToolCallbacks())
-//                .build();
-//        CallResponseSpec call = chatClient.prompt(message).call();
-//        String content = call.content();
-//        return content;
-//    }
-//}
+package com.simonking.boot.mcp.client.controller;
+
+
+import com.simonking.boot.mcp.client.dto.ActorsFilms;
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.openai.OpenAiChatOptions;
+import org.springframework.ai.tool.ToolCallbackProvider;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Spring AI
+ *
+ * @Author: ws
+ * @Date: 2025/2/24 15:10
+ */
+@RestController
+public class FooController {
+
+    private final ChatClient chatClient ;
+
+    public FooController(ChatClient.Builder aiClientBuilder) {
+        Map<String, String> commonHeaders = new HashMap<>();
+        OpenAiChatOptions options = OpenAiChatOptions.builder()
+                .httpHeaders(commonHeaders)
+                .build();
+
+        this.chatClient = aiClientBuilder
+                .defaultOptions(options)
+                .build();
+    }
+
+    /**
+     * 格式化输出示例
+     * @return
+     */
+    @GetMapping("/ai/actor")
+    public ActorsFilms generate(@RequestParam(value = "message", defaultValue = "谢霆锋") String message) {
+        return chatClient.prompt()
+                .user(u -> u.text("为 {actor} 生成 5 部电影的电影作品。")
+                        .param("actor", message))
+                .call()
+                .entity(ActorsFilms.class);
+    }
+}
