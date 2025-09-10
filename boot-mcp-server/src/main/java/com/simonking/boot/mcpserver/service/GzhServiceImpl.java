@@ -10,10 +10,9 @@ import org.springframework.stereotype.Service;
  * @Date: 2025/4/27 19:48
  */
 @Service
-public class GzhServiceImpl implements GzhService {
+public class GzhServiceImpl {
 
     @Tool(description = "词汇生成")
-    @Override
     public String generateWords() {
         // 约定生成内容的格式
         return "请以以下格式提供：        {\n" +

@@ -1,0 +1,14 @@
+spring:
+    ai:
+        mcp:
+            server:
+                name: gzh-mcp-server
+                sse-endpoint: /mcp/gzh
+    datasource:
+        url: jdbc:mysql://172.16.101.220:8066/adb_ylpj_prd_v103?useSSL=false&serverTimezone=UTC
+        username: root
+        password: 123456
+        driver-class-name: com.mysql.cj.jdbc.Driver
+
+server:
+    port: 8080

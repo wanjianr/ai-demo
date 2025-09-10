@@ -1,0 +1,5 @@
+业务库涉及的表如下
+1、医保基金银行单据表：hif_bank_doc_d
+2、医保基金银行单据明细表：hif_bank_doc_detl_d
+3、医保基金归集分类统计表：hif_iption_type_stt_d
+4、医保基金凭证统计表：hif_cert_stt_d

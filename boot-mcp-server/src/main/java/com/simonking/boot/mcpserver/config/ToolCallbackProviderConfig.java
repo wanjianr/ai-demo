@@ -1,6 +1,6 @@
-package com.simonking.boot.mcpserver;
+package com.simonking.boot.mcpserver.config;
 
-import com.simonking.boot.mcpserver.service.GzhServiceImpl;
+import com.simonking.boot.mcpserver.service.SqlQueryServiceHif;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.tool.method.MethodToolCallbackProvider;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 public class ToolCallbackProviderConfig {
 
     @Bean
-    public ToolCallbackProvider gzhRecommendTools(GzhServiceImpl gzhService) {
+    public ToolCallbackProvider gzhRecommendTools(SqlQueryServiceHif gzhService) {
         return MethodToolCallbackProvider.builder().toolObjects(gzhService).build();
     }
 }

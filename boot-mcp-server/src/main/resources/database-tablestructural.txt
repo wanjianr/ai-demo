@@ -1,0 +1,91 @@
+
+业务系统表结构信息如下：
+
+1、医保基金银行单据表 hif_bank_doc_d (
+	bank_doc_id varchar(20) NOT NULL COMMENT '银行单据ID',
+	admdvs varchar(6) NOT NULL COMMENT '医保区划',
+	year varchar(4) NOT NULL COMMENT '年度',
+	hi_bank_docno varchar(30) NOT NULL COMMENT '医保银行单号',
+	cert_date varchar(8) NOT NULL COMMENT '凭证日期',
+	gena_time datetime COMMENT '生成时间',
+	bank_cert_no varchar(50) NOT NULL COMMENT '银行凭证号',
+	bank_docno varchar(30) NOT NULL COMMENT '银行单号',
+	doc_type varchar(3) COMMENT '单据类型',
+	bank_type_code varchar(6) NOT NULL COMMENT '银行行别代码',
+	payter_acct_name varchar(50) NOT NULL COMMENT '付款方账户名称',
+	payter_bankacct varchar(50) NOT NULL COMMENT '付款方银行账号',
+	payter_bank_name varchar(100) NOT NULL COMMENT '付款方开户银行名称',
+	payter_bankcode varchar(30) NOT NULL COMMENT '付款人银行行号',
+	rcvber_bankacct varchar(50) NOT NULL COMMENT '收款方银行账号',
+	rcvber_acct_name varchar(50) NOT NULL COMMENT '收款方账户名称',
+	rcvber_bank_name varchar(100) NOT NULL COMMENT '收款方开户银行名称',
+	entry_date varchar(8) NOT NULL COMMENT '入账日期',
+	trns_optins varchar(30) COMMENT '交易经办机构',
+	opter varchar(50) COMMENT '操作人',
+	cury varchar(3) NOT NULL COMMENT '币种',
+	cury_name varchar(40) NOT NULL COMMENT '币种名称',
+	amt decimal(16, 2) NOT NULL COMMENT '金额',
+	memo longtext COMMENT '备注',
+	vali_flag varchar(3) NOT NULL DEFAULT '1' COMMENT '有效标志',
+	biz_date varchar(20) NOT NULL COMMENT '业务日期',
+	PRIMARY KEY (bank_doc_id)
+)
+
+2、医保基金银行单据明细表 HIF_BANK_DOC_DETL_D (
+	`BANK_DOC_DETL_ID` varchar(20) NOT NULL COMMENT '电子回单明细ID',
+	`BANK_DOC_ID` varchar(20) NOT NULL COMMENT '电子回单ID',
+	`ADMDVS` varchar(6) NOT NULL COMMENT '医保区划',
+	`YEAR` varchar(4) NOT NULL COMMENT '业务年度',
+	`BIZ_BCHNO` varchar(40) NOT NULL COMMENT '业务批次号',
+	`BIZ_FLAG` varchar(200) DEFAULT NULL COMMENT '业务标志',
+	`INSUTYPE` varchar(40) NOT NULL COMMENT '险种类型',
+	`ACCRYM_BEGN` varchar(6) NOT NULL COMMENT '费款所属期起始',
+	`ACCRYM_END` varchar(6) NOT NULL COMMENT '费款所属期结束',
+	`SET_SUM_AMT` decimal(16, 2) NOT NULL COMMENT '结算金额',
+	`OUT_FLAG` varchar(3) NOT NULL COMMENT '异地标识',
+	`VALI_FLAG` varchar(3) NOT NULL DEFAULT '1' COMMENT '有效标志',
+	`BIZ_DATE` varchar(20) NOT NULL COMMENT '业务日期',
+	PRIMARY KEY (`BANK_DOC_DETL_ID`)
+)
+
+
+3、医保基金归集分类统计表 hif_iption_type_stt_d (
+	iption_cnt int NOT NULL COMMENT '归集条数',
+	iption_data_type varchar(20) NOT NULL COMMENT '归集数据分类',
+	biz_date varchar(20) NOT NULL COMMENT '业务日期',
+	biz_mon varchar(6) NOT NULL COMMENT '月',
+	prov_admdvs varchar(6) NOT NULL COMMENT '省级区划',
+	admdvs varchar(6) NOT NULL COMMENT '医保区划',
+	PRIMARY KEY (iption_data_type, biz_date, admdvs)
+)
+
+4、医保基金凭证统计表 hif_cert_stt_d (
+	biz_date varchar(8) NOT NULL COMMENT '凭证日期',
+	biz_mon varchar(6) NOT NULL COMMENT '月',
+	biz_msg_no varchar(6) NOT NULL COMMENT '业务报文编号',
+	prov_admdvs varchar(6) NOT NULL COMMENT '省级区划',
+	admdvs varchar(6) NOT NULL COMMENT '医保区划',
+	bankacct varchar(50) NOT NULL COMMENT '银行账号',
+	bank_acct_name varchar(200) NOT NULL COMMENT '银行账户名称',
+	cert_cnt int NOT NULL COMMENT '归集条数',
+	PRIMARY KEY (biz_date, biz_msg_no, admdvs, bankacct, bank_acct_name)
+)
+
+关联关系说明：
+1、hif_bank_doc_d表的bank_doc_id字段关联hif_bank_doc_detl_d表的bank_doc_id字段，表示一个银行单据对应多个银行单据明细。
+
+枚举值说明：
+1、hif_bank_doc_d表的doc_type字段枚举值：
+   - '6501'：银行回单
+   - '6502'：银行对账单
+
+2、hif_iption_type_stt_d表的iption_data_type字段枚举值：
+    - '1'：医保基金银行回单表
+    - '2'：医保基金银行回单明细表
+    - '3'：医保基金会计凭证明细表
+    - '4'：医保基金业财关联表
+    - '5'：医保基金职工缴费明细表
+    - '6'：医保基金居民缴费明细表
+    - '7'：医保基金灵活就业缴费明细表
+    - '8'：医保基金待遇支出明细表
+    - '9'：医保基金账户信息记录表
