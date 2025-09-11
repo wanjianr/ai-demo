@@ -43,7 +43,7 @@ public class HifController {
      * POST方式的SQL查询接口 - 支持分页和缓存
      */
     @PostMapping("/sql")
-    public ResponseEntity<AntdTableResponseDTO> executeSqlQuery(@RequestBody QueryPageRequestDTO request) {
+    public ResponseEntity<Object> executeSqlQuery(@RequestBody QueryPageRequestDTO request) {
         String queryDescription = request.getQuery();
         System.err.println("SQL查询请求: " + queryDescription);
         System.err.println("分页参数: page=" + request.getPage() + ", size=" + request.getSize());
@@ -54,7 +54,7 @@ public class HifController {
         // todo 将response结构化为AntdTableResponseDTO
         AntdTableResponseDTO tableResponse = AntdTableResponseDTO.builder()
                 .build();
-        return ResponseEntity.ok(tableResponse);
+        return ResponseEntity.ok(response);
     }
 
 
@@ -122,44 +122,6 @@ public class HifController {
         }
         return String.format(queryPrompt, request.getQuery(),
                 request.getPage(), request.getSize(), request.getPage(), request.getSize(), request.getQuery());
-        // 构建增强的提示词
-//        StringBuilder promptBuilder = new StringBuilder();
-//        promptBuilder.append(queryPrompt).append("\n\n");
-//
-//        // 基础查询信息
-//        promptBuilder.append(String.format("用户查询需求：%s\n\n", request.getQuery()));
-//
-//        // 分页参数
-//        promptBuilder.append(String.format("分页要求：第%d页，每页%d条记录\n\n",
-//                request.getPage(), request.getSize()));
-//
-//        // 缓存相关处理
-//        promptBuilder.append(String.format("缓存处理：请先使用getCachedSql工具查找缓存键为'%s'的SQL语句\n\n",
-//                request.getQuery()));
-//
-//        promptBuilder.append(String.format("""
-//            请按照以下步骤处理这个查询：
-//
-//            1. 【可选】如果需要使用缓存，先调用getCachedSql工具查找已缓存的SQL
-//            2. 如果没有缓存或需要生成新SQL，则：
-//               a) 使用getDatabaseTables工具获取所有相关的表名
-//               b) 使用getDatabaseStructure工具获取表的结构、关联关系
-//               c) 基于表结构生成合适的SQL查询语句
-//            3. 使用executeQuery工具执行SQL，必须传入以下参数：
-//               - sql: 生成的SQL语句
-//               - page: %d (页码)
-//               - pageSize: %d (每页大小)
-//               - queryDescription: "%s" (查询描述，用于缓存)
-//
-//            请确保：
-//            - SQL语句语法正确，使用反引号包围字段名和表名
-//            - 添加适当的WHERE条件和ORDER BY排序
-//            - 正确处理分页参数
-//            - 缓存生成的SQL以便后续使用
-//            - 结果展示包含分页信息和导航提示
-//            """, request.getPage(), request.getSize(), request.getQuery()));
-//
-//        return promptBuilder.toString();
     }
 
 }

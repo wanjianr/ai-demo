@@ -48,8 +48,10 @@
 【主要数据表】
 1. hif_iption_type_stt_d - 医保基金归集分类统计表
    - 关键字段：iption_cnt(归集条数)、iption_data_type(归集数据分类)、biz_date(业务日期)、admdvs(医保区划)
+   - 注意该表没有vali_flag字段
 2. hif_cert_stt_d - 医保基金凭证统计表
    - 关键字段：cert_cnt(归集条数)、biz_date(凭证日期)、bankacct(银行账号)、bank_acct_name(银行账户名称)
+   - 注意该表没有vali_flag字段
 3. hif_bank_doc_d - 医保基金银行单据表
    - 关键字段：hi_bank_docno(医保银行单号)、cert_date(凭证日期)、amt(金额)
 4. admdvs_a - 区划表
