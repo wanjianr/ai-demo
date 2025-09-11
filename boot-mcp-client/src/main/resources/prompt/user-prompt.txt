@@ -1,0 +1,54 @@
+🔍 医保基金系统数据查询任务
+================================
+
+【用户查询需求】
+%s
+
+【分页要求】
+- 页码：第 %s 页
+- 每页大小：%s 条记录
+
+【任务执行步骤】
+请严格按照以下步骤处理这个查询：
+
+1️【缓存检查阶段】（可选）
+   如果用户提到使用缓存或之前查询过类似内容：
+   - 使用getCachedSql工具查找相关的缓存SQL语句
+   - 如果找到合适的缓存SQL，可以直接跳到步骤4
+
+2️【表结构分析阶段】
+   - 使用getDatabaseTables工具获取所有相关的表名信息
+   - 使用getDatabaseStructure工具获取表的详细结构和关联关系
+   - 分析查询需求，确定需要的表和字段
+
+3️【SQL生成阶段】
+   基于表结构生成合适的SQL查询语句，要求：
+   - 只生成SELECT查询语句
+   - 使用反引号包围字段名和表名：`table_name`, `field_name`
+   - 添加适当的WHERE条件和ORDER BY排序
+   - ⚠️ 重要：不要在SQL中包含LIMIT分页语句
+   - 确保日期格式正确（YYYYMMDD或YYYYMM或YYYY-MM-DD）
+   - 区划代码使用6位数字格式
+
+4️【执行查询阶段】
+   使用executeQuery工具执行SQL，必须传入以下参数：
+   - sql: 生成的SQL语句（不包含LIMIT）
+   - page: %s
+   - pageSize: %s
+   - queryDescription: "%s"
+
+【医保系统查询要点】
+- 日期字段格式：biz_date(YYYYMMDD)、biz_mon(YYYYMM)、cert_date(YYYYMMDD)
+- 区划字段：admdvs(6位医保区划)、prov_admdvs(6位省级区划)
+- 银行字段：bankacct(银行账号)、bank_acct_name(银行账户名称)
+- 统计字段：iption_cnt(归集条数)、cert_cnt(凭证条数)、amt(金额)
+
+【查询优化建议】
+- 添加日期范围条件以提升查询性能
+- 使用vali_flag='1'过滤有效记录
+- 考虑使用LEFT JOIN关联区划表获取区划名称
+- 对大数据量查询添加合理的ORDER BY排序
+
+
+
+现在开始执行查询任务！

@@ -71,7 +71,7 @@ public class ToolsController {
 
     private String getSystemPrompt() {
         try {
-            ClassPathResource resource = new ClassPathResource("prompt/chat-client-prompt.txt");
+            ClassPathResource resource = new ClassPathResource("prompt/system-prompt.txt");
             return new String(resource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             return "";
@@ -81,7 +81,7 @@ public class ToolsController {
     private String buildSqlQueryPrompt(QueryPageRequestDTO queryDescription) {
         String quryPrompt;
         try {
-            ClassPathResource resource = new ClassPathResource("prompt/query-model-prompt.txt");
+            ClassPathResource resource = new ClassPathResource("prompt/user-prompt.txt");
             quryPrompt = new String(resource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             return "";

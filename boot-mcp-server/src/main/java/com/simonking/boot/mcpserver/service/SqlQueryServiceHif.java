@@ -153,9 +153,9 @@ public class SqlQueryServiceHif {
         sb.append("- 执行时间：").append(executionTime).append("ms\n\n");
 
         if (data.isEmpty()) {
-            sb.append("📝 查询结果：无数据\n");
+            sb.append("查询结果：无数据\n");
         } else {
-            sb.append("📋 查询结果：\n");
+            sb.append("查询结果：\n");
             sb.append(formatAsTable(data));
         }
 
