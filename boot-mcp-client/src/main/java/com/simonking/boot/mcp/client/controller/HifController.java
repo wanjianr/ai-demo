@@ -1,5 +1,6 @@
 package com.simonking.boot.mcp.client.controller;
 
+import com.simonking.boot.mcp.client.dto.AntdTableResponseDTO;
 import com.simonking.boot.mcp.client.dto.QueryPageRequestDTO;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.openai.OpenAiChatOptions;
@@ -42,7 +43,7 @@ public class HifController {
      * POST方式的SQL查询接口 - 支持分页和缓存
      */
     @PostMapping("/sql")
-    public ResponseEntity<String> executeSqlQuery(@RequestBody QueryPageRequestDTO request) {
+    public ResponseEntity<AntdTableResponseDTO> executeSqlQuery(@RequestBody QueryPageRequestDTO request) {
         String queryDescription = request.getQuery();
         System.err.println("SQL查询请求: " + queryDescription);
         System.err.println("分页参数: page=" + request.getPage() + ", size=" + request.getSize());
@@ -50,7 +51,10 @@ public class HifController {
         String response = this.chatClient
                 .prompt(buildSqlQueryPrompt(request))
                 .call().content();
-        return ResponseEntity.ok(response);
+        // todo 将response结构化为AntdTableResponseDTO
+        AntdTableResponseDTO tableResponse = AntdTableResponseDTO.builder()
+                .build();
+        return ResponseEntity.ok(tableResponse);
     }
 
 
