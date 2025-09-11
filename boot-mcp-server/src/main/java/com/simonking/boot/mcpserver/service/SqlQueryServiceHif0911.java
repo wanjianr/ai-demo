@@ -221,6 +221,7 @@ public class SqlQueryServiceHif0911 {
         String countSql = buildCountSql(sql);
         Integer totalCount = null;
         try {
+            log.info("执行总数查询SQL: " + countSql);
             totalCount = jdbcTemplate.queryForObject(countSql, Integer.class);
         } catch (Exception e) {
             log.warn("查询总数失败，将使用实际返回数据作为总数: " + e.getMessage());
@@ -228,6 +229,7 @@ public class SqlQueryServiceHif0911 {
 
         // 2. 执行分页数据查询
         String paginatedSql = buildPaginatedSql(sql, page, pageSize);
+        log.info("执行分页查询SQL: " + paginatedSql);
         List<Map<String, Object>> data = jdbcTemplate.queryForList(paginatedSql);
 
         // 3. 计算分页信息

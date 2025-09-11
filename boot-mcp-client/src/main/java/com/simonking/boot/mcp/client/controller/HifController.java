@@ -43,18 +43,38 @@ public class HifController {
      * POST方式的SQL查询接口 - 支持分页和缓存
      */
     @PostMapping("/sql")
-    public ResponseEntity<Object> executeSqlQuery(@RequestBody QueryPageRequestDTO request) {
+    public ResponseEntity<AntdTableResponseDTO> executeSqlQuery(@RequestBody QueryPageRequestDTO request) {
         String queryDescription = request.getQuery();
         System.err.println("SQL查询请求: " + queryDescription);
         System.err.println("分页参数: page=" + request.getPage() + ", size=" + request.getSize());
 
-        String response = this.chatClient
-                .prompt(buildSqlQueryPrompt(request))
-                .call().content();
-        // todo 将response结构化为AntdTableResponseDTO
-        AntdTableResponseDTO tableResponse = AntdTableResponseDTO.builder()
-                .build();
-        return ResponseEntity.ok(response);
+        try {
+            // 使用Spring AI的类型转换器直接转换为AntdTableResponseDTO
+            AntdTableResponseDTO response = this.chatClient
+                    .prompt(buildSqlQueryPrompt(request))
+                    .call()
+                    .entity(AntdTableResponseDTO.class);
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            System.err.println("查询执行异常: " + e.getMessage());
+            e.printStackTrace();
+
+            // 返回错误响应
+            AntdTableResponseDTO errorResponse = AntdTableResponseDTO.builder()
+                    .columns(java.util.Collections.emptyList())
+                    .dataSource(java.util.Collections.emptyList())
+                    .topText("查询执行失败")
+                    .bottomText("错误信息: " + e.getMessage())
+                    .pagination(AntdTableResponseDTO.Pagination.builder()
+                            .total(0)
+                            .current(request.getPage())
+                            .pageSize(request.getSize())
+                            .build())
+                    .build();
+            return ResponseEntity.ok(errorResponse);
+        }
     }
 
 
